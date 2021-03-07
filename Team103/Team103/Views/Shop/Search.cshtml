@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Team103.Models.TblProduct>
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Search</h1>
+
+<form asp-action="Search" method="post">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group">
+                Search by Product Name: <input maxlength="20" type="text" name="searchName" value="@ViewData["NameFilter"]" class="form-control" />
+            </div>
+            <div class="form-group">
+                Minimum Price: <input type="number" min="0" max="1000" name="priceMin" value="@ViewData["PriceMinFilter"]" class="form-control" />
+            </div>
+            <div class="form-group">
+                Maximum Price: <input type="number" min="0" max="1000" name="priceMax" value="@ViewData["PriceMaxFilter"]" class="form-control" />
+            </div>
+
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-action="Search">Reset Search</a>
+        </p>
+    </div>
+</form>
+
+@if (Model != null)
+{
+    <table class="table table-sm table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width:10%">
+                </th>
+                <th style="width:30%">
+                    Product
+                </th>
+                <th style="width: 55%">Description</th>
+                <th style="width:5%">
+                    Price
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td style="text-align:right">
+                        <a asp-action="Details" asp-route-id="@p.ProductPk">
+                            <img src="~/Images/Product/@p.ImageFile" alt="" style="border-width:0px;width:100px;height:100px" />
+                        </a>
+                    </td>
+                    <td><a asp-action="Details" asp-route-id="@p.ProductPk">@p.ProductName</a></td>
+                    <td>@p.ProductDescription</td>
+                    <td style="text-align:right">@p.UnitPrice.ToString("c2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

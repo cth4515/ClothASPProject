@@ -1,0 +1,82 @@
+﻿@model Team103.Models.LoginInput
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<hr />
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login" method="post" id="aform">
+
+            <input type="hidden" asp-for="ReturnURL" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">User Name</label>
+                <input asp-for="UserName" class="form-control" value="@ViewData["UserName"]" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserPassword" class="control-label">User Password</label>
+                <input asp-for="UserPassword" class="form-control" value="@ViewData["UserPassword"]" />
+                <span asp-validation-for="UserPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input id="submit" type="submit" value="Login" class="btn btn-primary log" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (ViewData["message"] != null)
+{
+    <div class="alert alert-danger">@ViewData["message"]</div>
+}
+
+@if (!Context.User.Identity.IsAuthenticated)
+{
+    <div>
+        <a asp-action="SignUp" asp-controller="Account">Sign Up</a>
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            var reg = /^[a-zA-Z0-9]+$/;
+            $("#submit").on("click", function () {
+                if ($.trim($('#UserName').val()) == '') {
+                    alert('Please enter a username');
+                    return false;
+                }
+                else if (!(reg.test($('#UserName').val()))) {
+                    alert('Valid characters for user name are a-z 0-9');
+                    return false;
+                }
+                else if ($.trim($('#UserPassword').val()) == '') {
+                    alert('Please enter a password');
+                    return false;
+                }
+                else if (!(reg.test($('#UserPassword').val()))) {
+                    alert('Valid characters for password are a-z 0-9');
+                    return false;
+                }
+
+            });
+
+        });
+    </script>
+}
+

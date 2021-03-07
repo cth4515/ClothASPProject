@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Team103.Models.TblProduct>
+@{
+    ViewData["Title"] = "Product";
+}
+
+    <div class="text-center">
+        <h1 class="display-4">@ViewData["message"]</h1>
+
+    </div>
+<table>
+    @foreach (var p in Model)
+    {
+        <tr class="p-float">
+            <td class="p-float-in">
+                <a href="@Url.Action("Details", "Shop")?id=@p.ProductPk">
+                    <img src="~/Images/Product/@p.ImageFile" class="p-img" />
+                    <span class="p-name">@p.ProductName</span>
+                </a>
+
+            </td>
+        </tr>
+    }
+</table>

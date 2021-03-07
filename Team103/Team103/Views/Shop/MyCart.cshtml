@@ -1,0 +1,99 @@
+﻿@model Cart
+@{
+    ViewData["Title"] = "MyCart";
+}
+
+@if (!Model.CartItems().Any())
+{
+    <h1 class="text-lg-center">Your cart is empty.</h1>
+    <p class="text-lg-center"><a asp-action="Search" class="btn btn-primary " asp-controller="Shop">Search Products</a></p>
+}
+
+else
+{
+
+<h1>
+    @((!Context.User.Identity.IsAuthenticated) ? " Your Cart" : $"Your Cart -  {@Context.User.Identity.Name}")
+</h1>
+
+
+
+<p>
+    <a asp-action="Search" asp-controller="Shop">Continue Shopping</a>
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Product
+            </th>
+            <th class="text-right">
+                Price
+            </th>
+            <th class="text-right">
+                Quantity
+            </th>
+
+            <th class="text-right">
+                Extended price
+            </th>
+
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems())
+        {
+            <tr>
+                <td>
+                    <img src="~/Images/Product/@item.Product.ImageFile" height="100" width="100" alt="@item.Product.ProductName" />
+                </td>
+                <td>
+                    <a asp-action="Details" asp-controller="Shop" asp-route-id="@item.Product.ProductPk">@item.Product.ProductName</a>
+                </td>
+                <td class="text-right">
+                    @item.Product.UnitPrice.ToString("c")
+                </td>
+                <td class="text-right">
+                    <form asp-action="UpdateCart" asp-controller="Shop" method="post">
+                        <input type="hidden" value="@item.Product.ProductPk" name="ProductPk" />
+                        <input type="number" value="@item.Quantity" name="qty" size="3" required min="1" max="100" />
+                        <input type="submit" value="Update Quantity" class="btn btn-sm btn-warning" />
+                    </form>
+                </td>
+                <td class="text-right">
+                    @((item.Product.UnitPrice * item.Quantity).ToString("c"))
+                </td>
+                <td>
+                    <form asp-action="RemoveFromCart" asp-controller="Shop" method="post">
+                        <input type="hidden" value="@item.Product.ProductPk" name="ProductPk" />
+                        <input type="submit" value="Remove Product" class="btn btn-danger btn-sm" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5" class="text-right">
+                Order Total:
+            </td>
+            <td>
+                @Model.ComputeOrderTotal().ToString("c")
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<p>
+    <a asp-action="CheckOut" class="btn btn-primary" asp-controller="Restrict">Check Out</a>
+
+</p>
+
+
+}

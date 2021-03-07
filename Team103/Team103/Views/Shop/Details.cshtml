@@ -1,0 +1,64 @@
+﻿@model Team103.Models.TblProduct
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Product
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+        <dt class="col-sm-2">
+            Price
+        </dt>
+        <dd class="col-sm-10">
+            @Model.UnitPrice.ToString("c")
+        </dd>
+        <dt class="col-sm-2">
+            Number In Stock
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OnHand)
+        </dd>
+        <dt class="col-sm-2">
+            Size
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt class="col-sm-2">
+            Color
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt class="col-sm-2">
+            Category
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CategoryFkNavigation.ProductCategoryName)
+        </dd>
+        <dt class="col-sm-2">
+            Description
+        </dt>
+        <dd class="col-sm-10 ">
+            @Html.DisplayFor(model => model.ProductDescription)
+        </dd>
+        <dd class="col-sm-10" style="text-align:center">
+            <br />
+            <img src="~/Images/Product/@Model.ImageFile" height="300" width="350" alt="@Model.ProductName" />
+        </dd>
+    </dl>
+</div>
+<div>
+    <br />
+    <a asp-action="AddToCart" asp-route-id="@Model.ProductPk" class="btn btn-success btn-sm">Add to Cart</a>&nbsp&nbsp
+    <a asp-action="Search">Back to Search</a>
+</div>
